@@ -4,9 +4,10 @@ Claude Code skills for building AI-powered workflows.
 
 ## Skills
 
-| # | Skill | Description | Status |
-|---|-------|-------------|--------|
-| 1 | [ai-agent-builder](./ai-agent-builder/) | Build, update, and refine AI agents/assistants with structured artifact generation | In Development |
+| # | Skill | Description | Version | Status |
+|---|-------|-------------|---------|--------|
+| 1 | [ai-agent-builder](./ai-agent-builder/) | Build, update, and refine AI agents/assistants with structured artifact generation | 1.0.0 | Released |
+| 2 | [youtube-transcript-ytdlp](./youtube-transcript-ytdlp/) | Fetch YouTube transcripts locally via yt-dlp — free, offline, no API credits | 1.0.0 | Released |
 
 ## Installation
 
