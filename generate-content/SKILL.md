@@ -41,27 +41,86 @@ Phase 6: SAVE - files to repos + update tracker
 
 ### Step 1: Project Interview
 
-Ask the user IN CHAT (one question at a time, conversational):
+Ask the user IN CHAT (one question at a time, conversational). Wait for each answer before asking the next.
 
-1. **Project basics:**
-   - "What's your project/brand about? (1-2 sentences)"
-   - "Who's your target audience? (e.g., developers, PMs, entrepreneurs, broad)"
-   - "What platforms do you publish on? (Telegram, LinkedIn, Twitter, blog, YouTube?)"
+**Block A - Who you are:**
+1. "What's your role? (e.g., developer, designer, PM, founder, marketer, educator, freelancer...)"
+2. "What industry/domain are you in? (e.g., SaaS, fintech, e-commerce, AI/ML, education, consulting...)"
+3. "How many years of experience? What's your expertise level in this domain?"
+4. "What makes your perspective unique? What do you do differently from others in your space?"
 
-2. **Content style:**
-   - "What language do you write in? (English, Russian, other?)"
-   - "How formal is your tone? (casual/balanced/professional)"
-   - "Any specific vocabulary, phrases, or words you always/never use?"
-   - "Do you have an existing brand voice guide? (path or 'no')"
+**Block B - Your project/brand:**
+5. "What's your project/brand about? (1-2 sentences)"
+6. "Who's your target audience? Be specific - their role, level, what problems they face"
+7. "What value do you give your audience? What do they come to you for?"
+8. "Do you have sub-projects or multiple content streams? (e.g., main blog + newsletter + product updates)"
 
-3. **Structure:**
-   - "Where should content files live? (default: `content/`)"
-   - "Do you have a blog/site? If yes, what's the URL and blog path structure?"
-   - "Do you want session log tracking? (scans CC sessions for content ideas)"
+**Block C - Content style:**
+9. "What language do you write in? (English, Russian, other?)"
+10. "How formal is your tone? (casual/balanced/professional)"
+11. "Any specific vocabulary, phrases, or jargon you always use? Words you never use?"
+12. "Do you have an existing brand voice guide? (path or 'no')"
+13. "What platforms do you publish on? (Telegram, LinkedIn, Twitter, blog, YouTube?)"
 
-4. **Author info:**
-   - "Author name for frontmatter?"
-   - "Brief author bio (for LinkedIn context)?"
+**Block D - Structure:**
+14. "Where should content files live? (default: `content/`)"
+15. "Do you have a blog/site? If yes, what's the URL and blog path structure?"
+16. "Do you want session log tracking? (scans CC sessions for content ideas)"
+17. "Author name for frontmatter?"
+18. "Brief author bio (for LinkedIn context)?"
+
+### Step 1b: Suggest Content Angles
+
+Based on the user's role, domain, audience, and unique perspective, **generate a list of 8-12 content angle suggestions** tailored to their context. Present them as a numbered list and ask the user to pick the ones that resonate, modify them, or add their own.
+
+**Angle generation logic:**
+
+For each angle, consider:
+- The user's role (what they do daily that others would learn from)
+- Their domain (what's happening in their industry)
+- Their audience (what problems the audience needs solved)
+- Their unique perspective (what separates them from generic content)
+
+**Example angle sets by role (DO NOT copy these verbatim - generate fresh ones based on actual interview answers):**
+
+*Developer:*
+- practical-guide: "How I built X" step-by-step walkthroughs
+- tool-review: Hands-on comparison of tools/frameworks
+- debugging-story: "This bug took me N hours" post-mortems
+- architecture-decision: Why I chose X over Y for real projects
+- open-source-contribution: What I learned contributing to X
+
+*Designer:*
+- design-process: From brief to final design, showing iterations
+- tool-workflow: How I use Figma/tool for specific tasks
+- design-system: Building and maintaining design systems
+- client-feedback: Navigating revisions and stakeholder input
+- trend-analysis: What's actually working vs. what's hype
+
+*Founder/Entrepreneur:*
+- build-in-public: Revenue, decisions, failures - transparent
+- zero-to-one: How I went from idea to first users
+- automation-story: What I automated and time/money saved
+- hiring-firing: Team building decisions and lessons
+- market-analysis: What I see in my niche that others miss
+
+*Marketer:*
+- campaign-breakdown: What worked, what didn't, actual numbers
+- channel-strategy: Why I chose these channels over others
+- content-experiment: A/B tests and surprising results
+- tool-stack: My actual marketing automation setup
+- audience-insight: What my audience data tells me
+
+*Educator/Consultant:*
+- myth-busting: Common misconceptions in my field
+- framework-intro: Mental models I teach my clients
+- case-study: Client transformation stories (anonymized)
+- behind-the-scenes: How I prepare courses/workshops
+- industry-trend: What's changing and how to adapt
+
+After the user confirms their angles, save them to config.
+
+**The user can always add, remove, or rename angles later via `--setup`.**
 
 ### Step 2: Create Project Config
 
@@ -80,10 +139,21 @@ Create `.content-pipeline/config.json` in the project root:
     "name": "Author Name",
     "bio": "Brief bio for LinkedIn context"
   },
+  "author_role": "developer",
+  "domain": "SaaS / AI tooling",
+  "experience": "5 years, senior level",
+  "unique_perspective": "What makes this author's view different",
   "audience": {
     "primary": "developers",
-    "segments": ["developers", "PMs", "AI enthusiasts"]
+    "segments": ["developers", "PMs", "AI enthusiasts"],
+    "problems": ["How to ship faster with AI", "Which tools actually work"]
   },
+  "angles": [
+    {"id": "practical-guide", "label": "How I built X - step-by-step walkthroughs"},
+    {"id": "tool-review", "label": "Hands-on comparison of tools/frameworks"},
+    {"id": "debugging-story", "label": "This bug took me N hours - post-mortems"},
+    {"id": "architecture-decision", "label": "Why I chose X over Y for real projects"}
+  ],
   "platforms": {
     "blog": true,
     "telegram": true,
@@ -216,8 +286,8 @@ Wait for the user to reply with their choices. The user will type theme numbers 
 Every session MUST get a resolution. No unprocessed sessions.
 
 **Step 4:** For selected themes, use AskUserQuestion (this fits fine - only 3-4 options per question):
-1. Angle: practical-guide / tech-case / tool-review / case-study
-2. Audience: use segments from config.audience
+1. Angle: show angles from `config.angles` (these were tailored during onboarding to the user's role and domain). If config has more than 4 angles, show the most relevant ones for this specific theme + "other" option
+2. Audience: use segments from `config.audience.segments`
 3. Key takeaway (one sentence)
 
 ## Phase 3: RESEARCH
@@ -246,7 +316,7 @@ Instruct subagent to read: project's brand voice file, `references/writing-guide
 
 Also read project's platform style guides for each enabled platform.
 
-Provide: topic, angle, audience (from config), takeaway, sources from Phase 3, raw session data, project language (from config).
+Provide: topic, angle (with label from config.angles), audience (from config), takeaway, sources from Phase 3, raw session data, project language (from config), author role + domain + unique perspective (from config) - so the writer can frame content from the right professional viewpoint.
 
 Write versions for each enabled platform:
 1. **Blog** (600-1200 words) with frontmatter + Sources section

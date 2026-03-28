@@ -6,7 +6,7 @@
 
 ## What It Does
 
-0. **Setup** (first run) - interviews you about your brand, audience, platforms, tone - then creates config, directory structure, brand voice guide, and platform style guides
+0. **Setup** (first run) - deep onboarding: asks about your role, domain, expertise, unique perspective, audience, platforms, tone - then suggests content angles tailored to your profile and creates config, directory structure, brand voice guide, and platform style guides
 1. **Analyze** - scans Claude Code session logs, extracts themes and topics
 2. **Questions** - interactive theme selection, angle, audience targeting
 3. **Research** - finds sources and verifies facts via Exa MCP (or WebSearch fallback)
@@ -16,7 +16,8 @@
 
 ## Key Features
 
-- **Interactive onboarding**: First run interviews you and creates project config, directory structure, brand voice guide, and platform guides - no manual setup needed
+- **Deep onboarding**: First run interviews you about role, domain, expertise, unique perspective - then suggests 8-12 content angles tailored to your profile. Creates project config, directory structure, brand voice guide, and platform guides automatically
+- **Role-aware angles**: Content angles are generated based on YOUR role and domain (developer, designer, founder, marketer, educator, etc.) - not hardcoded
 - **Multi-platform output**: Blog (600-1200 words) + Telegram (1000-2000 chars) + LinkedIn (1000-2000 chars)
 - **AI marker removal**: 4 specialized critics run in parallel to catch AI-typical patterns
 - **Fact checking**: Verifies tool versions, statistics, and claims via web search
@@ -30,7 +31,7 @@
 ```
 First run in new project
         |
-  Phase 0: SETUP - interview user, create config + directories
+  Phase 0: SETUP - interview user, suggest angles, create config + directories
         |
 Session logs / External content
         |
@@ -73,7 +74,7 @@ ln -s ~/skills/generate-content ~/.claude/skills/generate-content
 
 ```
 .content-pipeline/
-  config.json             # Project settings (audience, platforms, paths, etc.)
+  config.json             # Project settings (role, domain, angles, audience, platforms, paths)
   brand-voice.md          # Your brand voice guide (from interview)
   negative-patterns.md    # Prohibited AI patterns
   telegram-style.md       # Telegram formatting (if enabled)
@@ -108,7 +109,7 @@ The `references/` folder contains both **pipeline rules** (used as-is) and **tem
 | `telegram-style-template.md` | Telegram channel post formatting |
 | `linkedin-style-template.md` | LinkedIn post formatting |
 
-Copy the templates to your project, rename them (e.g., `BRAND_VOICE.md`), and fill in your own examples, vocabulary, and style preferences.
+You don't need to manually customize these - the onboarding process (Phase 0) generates project-specific versions automatically based on your interview answers. Templates are here for reference if you want to edit the generated files later.
 
 ## Trigger Phrases
 
