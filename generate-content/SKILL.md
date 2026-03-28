@@ -22,15 +22,15 @@ Thin dispatcher that orchestrates 7 phases via subagents: Project setup (first r
 ```
 Phase 0: SETUP (first run only) - interview user, create project config + content structure
     |
-Phase 1: ANALYZE (opus subagent) - scan session logs, extract themes
+Phase 1: ANALYZE (subagent) - scan session logs, extract themes
     |
 Phase 2: QUESTIONS (interactive) - theme selection, angle, audience
     |
-Phase 3: RESEARCH (sonnet + Exa MCP) - sources, fact-check
+Phase 3: RESEARCH (subagent + Exa MCP) - sources, fact-check
     |
-Phase 4: DRAFT (opus subagent) - blog + TG + LinkedIn
+Phase 4: DRAFT (subagent) - blog + TG + LinkedIn
     |
-Phase 5: DEAIFY (4x sonnet parallel + opus rewriter) - kill AI markers
+Phase 5: DEAIFY (4x parallel critics + rewriter) - kill AI markers
     |
 Phase 6: SAVE - files to repos + update tracker
 ```
@@ -257,9 +257,9 @@ The orchestrator MUST pre-filter session IDs before launching the subagent:
 
 **The subagent must NOT read the tracker or compute diffs itself. The orchestrator passes only the list of new session file paths.**
 
-### Step 3: Analyze (opus subagent)
+### Step 3: Analyze (subagent)
 
-Use Task tool (subagent_type: "general-purpose", model: "opus"):
+Use Agent tool (subagent_type: "general-purpose"):
 
 Provide the subagent with the EXACT list of new session file paths from Step 2.
 
@@ -292,7 +292,7 @@ Every session MUST get a resolution. No unprocessed sessions.
 
 ## Phase 3: RESEARCH
 
-Use Task tool (subagent_type: "general-purpose", model: "sonnet"):
+Use Agent tool (subagent_type: "general-purpose"):
 
 **For search: use Exa MCP first (preferred), fall back to WebSearch if unavailable.**
 
@@ -310,7 +310,7 @@ Output: source list (URL + title + 1-sentence description) + key facts.
 
 ## Phase 4: DRAFT
 
-Use Task tool (subagent_type: "general-purpose", model: "opus"):
+Use Agent tool (subagent_type: "general-purpose"):
 
 Instruct subagent to read: project's brand voice file, `references/writing-guide.md`, `references/blog-format.md`, `references/platform-adapters.md`, project's negative patterns file.
 
@@ -336,7 +336,7 @@ Critical rules: short dash (-) not long (em-dash), first person, specific tool n
 
 Read `references/deaify-rules.md` and use prompts from it.
 
-Launch 4 Task tools simultaneously (subagent_type: "general-purpose", model: "sonnet"):
+Launch 4 Agent tools simultaneously (subagent_type: "general-purpose"):
 
 - **Critic A** (Generic Detector): cliches, no-specifics sentences, template transitions
 - **Critic B** (Rhythm Analyzer): monotone rhythm, same-length sentences, low burstiness
@@ -345,7 +345,7 @@ Launch 4 Task tools simultaneously (subagent_type: "general-purpose", model: "so
 
 ### Step 2: Rewriter
 
-Collect all 4 critic outputs. Use Task tool (subagent_type: "general-purpose", model: "opus"):
+Collect all 4 critic outputs. Use Agent tool (subagent_type: "general-purpose"):
 
 Provide original drafts + all 4 critic reports. Hard rules:
 1. Length <= original

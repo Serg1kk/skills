@@ -35,21 +35,22 @@ First run in new project
         |
 Session logs / External content
         |
-  Phase 1: ANALYZE (opus) - extract themes
+  Phase 1: ANALYZE (subagent) - extract themes
         |
   Phase 2: QUESTIONS (interactive) - pick topics, angle, audience
         |
-  Phase 3: RESEARCH (sonnet + Exa) - find sources
+  Phase 3: RESEARCH (subagent + Exa MCP) - find sources
         |
-  Phase 4: DRAFT (opus) - write blog + TG + LI
+  Phase 4: DRAFT (subagent) - write blog + TG + LI
         |
   Phase 5: DEAIFY
-        |-- Critic A (sonnet): Generic detector - cliches, empty phrases
-        |-- Critic B (sonnet): Rhythm analyzer - monotone patterns
-        |-- Critic C (sonnet): Brand voice - compliance check
-        |-- Critic D (sonnet): Fact checker - verify claims
+        |-- Critic A: Generic detector - cliches, empty phrases
+        |-- Critic B: Rhythm analyzer - monotone patterns
+        |-- Critic C: Brand voice - compliance check
+        |-- Critic D: Fact checker - verify claims (via Exa MCP)
+        |   (all 4 run in parallel)
         |
-        +-> Rewriter (opus) - apply all fixes
+        +-> Rewriter (subagent) - apply all fixes
         |
   Phase 6: SAVE - files + tracker update
 ```
@@ -67,8 +68,36 @@ ln -s ~/skills/generate-content ~/.claude/skills/generate-content
 ## Prerequisites
 
 - **No manual setup required!** On first run, the skill interviews you and creates everything automatically
-- **(Optional) Exa MCP server** - for web research. Falls back to WebSearch if not configured
 - **(Optional) Existing brand voice guide** - if you have one, the skill will merge it with its template
+
+### Exa MCP Server (recommended)
+
+The skill uses [Exa](https://exa.ai) MCP server for web research (Phase 3) and fact-checking (Phase 5 Critic D). Without it, the skill falls back to `WebSearch`/`WebFetch`, which works but is less powerful.
+
+**To set up Exa MCP:**
+
+1. Get an API key at [exa.ai](https://exa.ai)
+2. Add to your Claude Code MCP config (`~/.claude/.mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "exa": {
+      "command": "npx",
+      "args": ["-y", "exa-mcp-server"],
+      "env": {
+        "EXA_API_KEY": "your-api-key-here"
+      }
+    }
+  }
+}
+```
+
+3. Restart Claude Code
+
+The Exa MCP server is baked into the skill - subagents automatically discover and use it via `ToolSearch`. If Exa is not configured, they fall back to built-in web search tools.
+
+> **Note:** All subagents inherit the model of the calling session. The skill doesn't force specific models - it runs on whatever model you're using.
 
 ### What gets created on first run:
 
