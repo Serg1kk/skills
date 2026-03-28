@@ -9,6 +9,7 @@ Claude Code skills for building AI-powered workflows.
 | 1 | [ai-agent-builder](./ai-agent-builder/) | Build, update, and refine AI agents/assistants with structured artifact generation | 1.0.0 | Released |
 | 2 | [youtube-transcript-ytdlp](./youtube-transcript-ytdlp/) | Fetch YouTube transcripts locally via yt-dlp — free, offline, no API credits | 1.0.0 | Released |
 | 3 | [video-transcription-analyzer](./video-transcription-analyzer/) | 7-stage pipeline: analyze video transcripts, extract KB items, map to roadmap, verify integrity | 1.0.0 | Released |
+| 4 | [generate-content](./generate-content/) | 6-phase pipeline: session logs to blog + Telegram + LinkedIn with AI-marker removal (deaification) | 1.0.0 | Released |
 
 ## Installation
 
